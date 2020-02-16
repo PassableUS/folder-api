@@ -19,7 +19,7 @@ phases:
       # Remove existing node_modules to clear dev dependencies
       - rm -r node_modules
       
-      - sudo apt-get install -y build-essential python
+      - yum install -y gcc-c++ make
 
       # Install runtime dependencies
       - npm install --production
