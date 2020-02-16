@@ -1,19 +1,9 @@
-var port = process.env.PORT || 3000;
-var express = require('express');
+const app = require('./app') // Our `app` module that is started by this file
+const http = require('http')
+const config = require('./utils/config')
 
-var app = express();
+const server = http.createServer(app) // Creates the server using the `app` module
 
-app.get('/', function(req, res) {
-  res.send({
-    "Output": "Hello World!"
-  });
-});
-
-app.post('/', function(req, res) {
-  res.send({
-    "Output": "Hello World!"
-  });
-});
-
-app.listen(port);
-module.exports = app;
+server.listen(config.port, () => {
+  console.log(`Server running on port ${config.port}`)
+})
