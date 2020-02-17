@@ -12,6 +12,7 @@ function generateUserJWTAndRedirect(req, res) {
   console.log("GENERATING JWT AND REDIRECTING")
   const accessJWT = token.generateAccessJWT(req.user.id)
   console.log("GENERATED ACCESS JWT " + accessJWT + "ATTEMPTING TO REDIRECT")
+  console.log("REDIRECTING TO: " + `${config.frontendUrl}/auth/login?token=${accessJWT}`)
   res
     .status(200)
     .redirect(`${config.frontendUrl}/auth/login?token=${accessJWT}`)
