@@ -9,6 +9,7 @@ require('../utils/authentication/facebook')
 require('../utils/authentication/local')
 
 function generateUserJWTAndRedirect(req, res) {
+  console.log("GENERATING JWT AND REDIRECTING")
   const accessJWT = token.generateAccessJWT(req.user.id)
   res
     .status(200)
