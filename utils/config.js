@@ -18,7 +18,7 @@ const config = convict({
     doc: 'URL for the frontend application',
     format: String,
     default: 'folder.me',
-    env: 'MONGODB_URI'
+    env: 'FRONTEND_URL'
   },
   authentication: {
     google: {
