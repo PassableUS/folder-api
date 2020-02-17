@@ -1,6 +1,8 @@
 const authRouter = require('express').Router()
 const passport = require('passport')
 const token = require('../utils/authentication/token')
+const config = require('../utils/config')
+
 require('../utils/authentication/jwt')
 require('../utils/authentication/google')
 require('../utils/authentication/facebook')
@@ -10,7 +12,7 @@ function generateUserJWTAndRedirect(req, res) {
   const accessJWT = token.generateAccessJWT(req.user.id)
   res
     .status(200)
-    .redirect(`http://localhost:3001/auth/login?token=${accessJWT}`)
+    .redirect(`${config.frontendUrl}/auth/login?token=${accessJWT}`)
 }
 
 // Google Routes
