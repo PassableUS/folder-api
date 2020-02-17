@@ -11,6 +11,7 @@ require('../utils/authentication/local')
 function generateUserJWTAndRedirect(req, res) {
   console.log("GENERATING JWT AND REDIRECTING")
   const accessJWT = token.generateAccessJWT(req.user.id)
+  console.log("GENERATED ACCESS JWT " + accessJWT + "ATTEMPTING TO REDIRECT")
   res
     .status(200)
     .redirect(`${config.frontendUrl}/auth/login?token=${accessJWT}`)
