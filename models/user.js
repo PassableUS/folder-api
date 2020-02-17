@@ -75,6 +75,11 @@ userSchema.methods.updateLastName = function (lastName) {
 }
 
 userSchema.methods.updateAvatarURL = function (avatarURL) {
+  console.log("URL")
+  console.log("URL")
+  console.log("URL")
+  console.log("URL")
+  
   if (avatarURL) { // If we are passed a valid URL (not undefined), we will update the avatar
     let newUser = {
       ...this.toObject(),

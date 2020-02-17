@@ -32,7 +32,7 @@ if (passportConfig.clientID) {
       }
 
       // Adds avatar from the provider if the user does not already have one
-      if (!user.avatar) {
+      if (user.avatar === 'https://i.imgur.com/54Uw1Vi.png') {
         if (profile.photos) { // No profile photos may be specified
           user.updateAvatarURL(profile.photos[0].value)
         }

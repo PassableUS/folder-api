@@ -24,8 +24,8 @@ if (passportConfig.clientID) {
         user.updateLastName(profile.name.familyName)
       }
 
-      // Adds avatar from the provider if the user does not already have one
-      if (!user.avatar) {
+      // Adds avatar from the provider if the user does not have one (if the user does not have a profile picture, they'll have the default picture)
+      if (user.avatar === 'https://i.imgur.com/54Uw1Vi.png') {
         user.updateAvatarURL(profile._json.picture)
       }
 
