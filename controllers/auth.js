@@ -2,6 +2,7 @@ const authRouter = require('express').Router()
 const passport = require('passport')
 const token = require('../utils/authentication/token')
 const config = require('../utils/config')
+const bcrypt = require('bcrypt')
 
 require('../utils/authentication/jwt')
 require('../utils/authentication/google')
@@ -18,6 +19,19 @@ function generateUserJWTAndRedirect(req, res) {
     .redirect(`${config.frontendUrl}/auth/login?token=${accessJWT}`)
 }
 
+const registerUserByEmailAndPassword = async (req, res) => {
+  const user = req.body
+  console.log("USER:", user)
+
+  // Generate hashed password
+  const saltRounds = 10
+  const passwordHash = await
+
+  res
+    .status(200)
+    .redirect('/auth/login')
+}
+
 // Google Routes
 authRouter.get('/google/start',
   passport.authenticate('google', { session: false, scope: ['openid', 'profile', 'email'] }))
@@ -32,8 +46,12 @@ authRouter.get('/facebook/redirect',
   passport.authenticate('facebook', { session: false }),
   generateUserJWTAndRedirect)
 
+// Register User Routes
+authRouter.post('/local/start',
+  registerUserByEmailAndPassword)
+
 // Local Authentication Routes
-authRouter.get('/local/start',
+authRouter.get('/local/redirect',
   passport.authenticate('local', { session: false }),
   generateUserJWTAndRedirect)
 
