@@ -1,5 +1,5 @@
 // TODO: Implement toJSON methods here and use them in controller to prevent information leaking
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const pathwaySchema = new mongoose.Schema({
   name: String,
@@ -8,21 +8,23 @@ const pathwaySchema = new mongoose.Schema({
   description: String,
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: "User"
   },
-  modules: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Module'
-  }]
-})
+  modules: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Module"
+    }
+  ]
+});
 
-pathwaySchema.set('toJSON', {
+pathwaySchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
   }
-})
+});
 
 // userSchema.methods.updateFirstName = function (firstName) {
 //   if (firstName) { // If we are passed a valid name (not undefined), we will update the name
@@ -39,6 +41,6 @@ pathwaySchema.set('toJSON', {
 //   }
 // }
 
-const Pathway = mongoose.model('Pathway', pathwaySchema)
+const Pathway = mongoose.model("Pathway", pathwaySchema);
 
-module.exports = Pathway
+module.exports = Pathway;

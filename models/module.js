@@ -1,5 +1,5 @@
 // TODO: Implement toJSON methods here and use them in controller to prevent information leaking
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const moduleSchema = new mongoose.Schema({
   name: {
@@ -13,17 +13,17 @@ const moduleSchema = new mongoose.Schema({
   courses: [Object],
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User"
   }
-})
+});
 
-moduleSchema.set('toJSON', {
+moduleSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
   }
-})
+});
 
 // LATER UPDATE MODULE NAME
 // userSchema.methods.updateFirstName = function (firstName) {
@@ -41,6 +41,6 @@ moduleSchema.set('toJSON', {
 //   }
 // }
 
-const Module = mongoose.model('Module', moduleSchema)
+const Module = mongoose.model("Module", moduleSchema);
 
-module.exports = Module
+module.exports = Module;
