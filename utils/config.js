@@ -76,6 +76,8 @@ const config = convict({
 })
 
 // Perform validation
-config.validate({ allowed: 'strict' })
+config.validate({
+  allowed: 'strict'
+})
 
 module.exports = config.getProperties()

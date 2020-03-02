@@ -52,7 +52,9 @@ userSchema.methods.updateFirstName = function (firstName) {
     }
     User.findByIdAndUpdate(mongoose.Types.ObjectId(this._id), newUser)
       .catch(error => {
-        return { error }
+        return {
+          error
+        }
       })
   } else {
     console.log('Invalid first name: ' + firstName)
@@ -67,7 +69,9 @@ userSchema.methods.updateLastName = function (lastName) {
     }
     User.findByIdAndUpdate(mongoose.Types.ObjectId(this._id), newUser)
       .catch(error => {
-        return { error }
+        return {
+          error
+        }
       })
   } else {
     console.log('Invalid last name: ' + lastName)
@@ -82,7 +86,9 @@ userSchema.methods.updateAvatarURL = function (avatarURL) {
     }
     User.findByIdAndUpdate(mongoose.Types.ObjectId(this._id), newUser)
       .catch(error => {
-        return { error }
+        return {
+          error
+        }
       })
   } else {
     console.log('Invalid avatarURL: ' + avatarURL)
@@ -97,7 +103,9 @@ userSchema.methods.updateEmail = function (email) {
     }
     User.findByIdAndUpdate(mongoose.Types.ObjectId(this._id), newUser)
       .catch(error => {
-        return { error }
+        return {
+          error
+        }
       })
   } else {
     console.log('Invalid email: ' + email)

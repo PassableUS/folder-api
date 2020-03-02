@@ -21,9 +21,7 @@ function generateUserJWTAndRedirect(req, res) {
 }
 
 function generateUserJWTAndSend(req, res) {
-  console.log("GENERATING JWT AND REDIRECTING")
   const accessJWT = token.generateAccessJWT(req.user.id)
-  console.log("GENERATED ACCESS JWT " + accessJWT + "ATTEMPTING TO SEND")
   res
     .status(200)
     .json(accessJWT)
@@ -32,7 +30,12 @@ function generateUserJWTAndSend(req, res) {
 const registerUserByEmailAndPassword = async (req, res, next) => {
 
   try {
-    const { email, password, firstName, lastName } = req.body
+    const {
+      email,
+      password,
+      firstName,
+      lastName
+    } = req.body
 
     // Generate hashed password
     const saltRounds = 10
@@ -47,8 +50,6 @@ const registerUserByEmailAndPassword = async (req, res, next) => {
 
     const savedUser = await createdUser.save()
 
-    console.log("CREATED USER WITH ", savedUser)
-
     res.status(201).json(savedUser)
   } catch (exception) {
     next(exception)
@@ -57,16 +58,25 @@ const registerUserByEmailAndPassword = async (req, res, next) => {
 
 // Google Routes
 authRouter.get('/google/start',
-  passport.authenticate('google', { session: false, scope: ['openid', 'profile', 'email'] }))
+  passport.authenticate('google', {
+    session: false,
+    scope: ['openid', 'profile', 'email']
+  }))
 authRouter.get('/google/redirect',
-  passport.authenticate('google', { session: false }),
+  passport.authenticate('google', {
+    session: false
+  }),
   generateUserJWTAndRedirect)
 
 // Facebook Routes
 authRouter.get('/facebook/start',
-  passport.authenticate('facebook', { session: false }))
+  passport.authenticate('facebook', {
+    session: false
+  }))
 authRouter.get('/facebook/redirect',
-  passport.authenticate('facebook', { session: false }),
+  passport.authenticate('facebook', {
+    session: false
+  }),
   generateUserJWTAndRedirect)
 
 // Register User Routes
@@ -75,7 +85,9 @@ authRouter.post('/local/start',
 
 // Local Authentication Routes
 authRouter.post('/local/login',
-  passport.authenticate('local', { session: false }),
+  passport.authenticate('local', {
+    session: false
+  }),
   generateUserJWTAndSend)
 
 module.exports = authRouter
