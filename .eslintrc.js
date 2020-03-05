@@ -13,5 +13,5 @@ module.exports = {
     sourceType: "module"
   },
   rules: {},
-  extends: ["eslint:recommented", "google", "prettier"]
+  extends: ["eslint:recommended", "google", "prettier"]
 };
