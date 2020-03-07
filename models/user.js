@@ -3,7 +3,11 @@ const uniqueValidator = require("mongoose-unique-validator");
 const findOrCreate = require("mongoose-findorcreate");
 
 const userSchema = new mongoose.Schema({
-  email: String,
+  email: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
   passwordHash: String,
   firstName: String,
   lastName: String,
