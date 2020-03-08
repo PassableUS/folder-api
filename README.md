@@ -2,7 +2,7 @@
 
 # Folder Web Client
 
-Web client hosted at https://folder.me (consumes `folder-api` hosted at `api.folder.me`)
+API for clients to consume (master branch automatically deployed at **api.folder.me**.
 
 ## Installation
 
