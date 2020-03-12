@@ -3,6 +3,7 @@ module.exports = {
     es6: true,
     node: true
   },
+  plugins: ["security"],
   extends: "eslint:recommended",
   globals: {
     Atomics: "readonly",
@@ -13,5 +14,10 @@ module.exports = {
     sourceType: "module"
   },
   rules: {},
-  extends: ["eslint:recommended", "google", "prettier"]
+  extends: [
+    "plugin:security/recommended",
+    "eslint:recommended",
+    "google",
+    "prettier"
+  ]
 };
