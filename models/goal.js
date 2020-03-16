@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 
 const goalSchema = new mongoose.Schema({
   goal: String,
-  start: Date,
-  end: Date
+  startDate: String,
+  endDate: String
 });
 
 goalSchema.set("toJSON", {

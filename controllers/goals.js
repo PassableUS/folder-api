@@ -20,12 +20,15 @@ goalsRouter.post(
 );
 
 goalsRouter.get(
-  "/",
+  "/:startDate/:endDate",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
+      const { startDate, endDate } = req.params;
       
-      const goals = await Goal.find({});
+      const goals = await Goal.find(
+        {"startDate": startDate, "endDate": endDate}
+        );
 
       res.json(goals.map(p => p.toJSON()));
     } catch (exception) {
