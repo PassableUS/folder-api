@@ -8,7 +8,7 @@ calendarRouter.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const calendarEvents = req.body;
+      const { calendarEvents } = req.body;
 
       const events = await CalendarEvent.insertMany(calendarEvents);
 
