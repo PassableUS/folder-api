@@ -8,7 +8,8 @@ goalsRouter.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const goals = req.body;
+      let goals = req.body;
+      goals = goals.map(goal => ({...goal, courseURL: goal.courseURL.join('/')}))
 
       const savedGoals = await Goal.insertMany(goals);
 
@@ -20,12 +21,11 @@ goalsRouter.post(
 );
 
 goalsRouter.get(
-  "/:startDate/:endDate",
+  "/week/:startDate/:endDate",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
       const { startDate, endDate } = req.params;
-      
       const goals = await Goal.find(
         {"startDate": startDate, "endDate": endDate}
         );
@@ -38,23 +38,42 @@ goalsRouter.get(
 );
 
 goalsRouter.get(
-  "/:eventId",
+  "/course/:moduleId/:courseURL",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const goal = await Goal.findById(req.params.goalId);
+      const { moduleId, courseURL } = req.params;
+      const url = courseURL.split(',').join('/');
 
-      if (!event) {
-        res.status(404).send();
-        return; // Must stop further execution of async code or else Express will try to send the json at the end there.
-      }
+      const goals = await Goal.find(
+        {"moduleId": moduleId, "courseURL": url}
+        );
 
-      res.json(goal);
-    } catch (error) {
-      next(error);
+      res.json(goals.map(p => p.toJSON()));
+    } catch (exception) {
+      next(exception);
     }
   }
 );
+
+goalsRouter.get(
+  "/:pathwayId",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      const { pathwayId } = req.params;
+      
+      const goals = await Goal.find(
+        {"pathwayId": pathwayId}
+        );
+
+      res.json(goals.map(p => p.toJSON()));
+    } catch (exception) {
+      next(exception);
+    }
+  }
+);
+
 
 // goalsRouter.put(
 //   "/:goalId",
