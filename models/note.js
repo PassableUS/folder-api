@@ -1,16 +1,13 @@
 const mongoose = require("mongoose");
 
 const noteSchema = new mongoose.Schema({
-  content: {
+  title: {
     type: String,
-    minlength: 1,
     required: true
   },
-  date: {
-    type: Date,
-    required: true
-  },
-  flagged: Boolean,
+  noteType: { type: String, enum: ["drawing", "text"] },
+  content: String,
+  // flagged: Boolean,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"

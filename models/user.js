@@ -34,7 +34,13 @@ const userSchema = new mongoose.Schema({
         done: false
       }
     ]
-  }
+  },
+  notes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Note"
+    }
+  ]
 });
 
 userSchema.plugin(uniqueValidator);
