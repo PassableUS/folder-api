@@ -15,6 +15,7 @@ const pathwayRouter = require("./controllers/pathways");
 const modulesRouter = require("./controllers/modules");
 const todosRouter = require("./controllers/todos");
 const calendarRouter = require("./controllers/calendar");
+const goalsRouter = require("./controllers/goals");
 const notesRouter = require("./controllers/notes");
 
 logger.info("Connecting to:", config.database);
@@ -53,6 +54,7 @@ app.use("/api/pathways", pathwayRouter);
 app.use("/api/modules", modulesRouter);
 app.use("/api/todos", todosRouter);
 app.use("/api/calendar", calendarRouter);
+app.use("/api/goals", goalsRouter);
 app.use("/api/notes", notesRouter);
 
 // After router middleware
