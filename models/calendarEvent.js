@@ -7,7 +7,11 @@ const calendarEventSchema = new mongoose.Schema({
   allDay: Boolean,
   start: Date,
   end: Date,
-  id: String
+  id: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }
 });
 
 calendarEventSchema.set("toJSON", {
@@ -19,6 +23,6 @@ calendarEventSchema.set("toJSON", {
 });
 
 
-const calendarEvent = mongoose.model("calendarEvent", calendarEventSchema);
+const CalendarEvent = mongoose.model("CalendarEvent", calendarEventSchema);
 
-module.exports = calendarEvent;
+module.exports = CalendarEvent;
