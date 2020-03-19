@@ -9,7 +9,16 @@ goalsRouter.post(
   async (req, res, next) => {
     try {
       let goals = req.body;
-      goals = goals.map(goal => ({...goal, courseURL: goal.courseURL.join('/')}))
+
+      goals = goals.map(goal => {
+        // if it's a course goal
+        const urlObject = {};
+        if (goal.courseURL) {
+          urlObject.courseURL = goal.courseURL.join('/');
+        }
+        
+        return {...goal, ...urlObject}
+      });
 
       const savedGoals = await Goal.insertMany(goals);
 
@@ -21,14 +30,12 @@ goalsRouter.post(
 );
 
 goalsRouter.get(
-  "/week/:startDate/:endDate",
+  "/week/:startDate/:endDate/:userId",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const { startDate, endDate } = req.params;
-      const goals = await Goal.find(
-        {"startDate": startDate, "endDate": endDate}
-        );
+      const { startDate, endDate, userId } = req.params;
+      const goals = await Goal.find({"startDate": startDate, "endDate": endDate, user: userId});
 
       res.json(goals.map(p => p.toJSON()));
     } catch (exception) {
@@ -38,16 +45,14 @@ goalsRouter.get(
 );
 
 goalsRouter.get(
-  "/course/:moduleId/:courseURL",
+  "/course/:moduleId/:courseURL/:userId",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const { moduleId, courseURL } = req.params;
+      const { moduleId, courseURL, userId } = req.params;
       const url = courseURL.split(',').join('/');
 
-      const goals = await Goal.find(
-        {"moduleId": moduleId, "courseURL": url}
-        );
+      const goals = await Goal.find({"moduleId": moduleId, "courseURL": url, user: userId});
 
       res.json(goals.map(p => p.toJSON()));
     } catch (exception) {
@@ -57,15 +62,13 @@ goalsRouter.get(
 );
 
 goalsRouter.get(
-  "/:pathwayId",
+  "/pathway/:pathwayId/:userId",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const { pathwayId } = req.params;
+      const { pathwayId, userId } = req.params;
       
-      const goals = await Goal.find(
-        {"pathwayId": pathwayId}
-        );
+      const goals = await Goal.find({"pathwayId": pathwayId, user: userId});
 
       res.json(goals.map(p => p.toJSON()));
     } catch (exception) {
@@ -73,35 +76,5 @@ goalsRouter.get(
     }
   }
 );
-
-
-// goalsRouter.put(
-//   "/:goalId",
-//   passport.authenticate("jwt", { session: false }),
-//   async (req, res, next) => {
-//     try {
-//       const event = await Goal.findById(req.params.eventId);
-//       const { title, desc, allDay, start, end, id } = req.body;
-
-//       if (!event) {
-//         res.status(404).send();
-//         return; // Must stop further execution of async code or else Express will try to send the json at the end there.
-//       }
-
-//       event.title = title;
-//       event.desc = desc;
-//       event.allDay = allDay;
-//       event.start = start;
-//       event.end = end;
-//       event.id = id;
-
-//       event.save();
-
-//       res.json(event);
-//     } catch (error) {
-//       next(error);
-//     }
-//   }
-// );
 
 module.exports = goalsRouter;

@@ -34,7 +34,21 @@ const userSchema = new mongoose.Schema({
         done: false
       }
     ]
-  }
+  },
+  notes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Note"
+    }
+  ],
+  busyTimesLastAsked: Number,
+  neverAskBusyTimes: Boolean,
+  studyDaysPerWeek: Number,
+  studyMinutesPerDay: Number,
+  weeklyGoalsLastAsked: Number,
+  neverAskWeeklyGoals: Boolean,
+  neverAskPathwayGoals: Boolean,
+  neverAskCourseGoals: Boolean
 });
 
 userSchema.plugin(uniqueValidator);
