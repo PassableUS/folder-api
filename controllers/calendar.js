@@ -20,12 +20,11 @@ calendarRouter.post(
 );
 
 calendarRouter.get(
-  "/:userId",
+  "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const userId = req.params.userId;
-      const events = await CalendarEvent.find({user: userId});
+      const events = await CalendarEvent.find({user: req.user.id});
 
       res.json(events.map(p => p.toJSON()));
     } catch (exception) {

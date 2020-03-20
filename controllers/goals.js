@@ -30,12 +30,12 @@ goalsRouter.post(
 );
 
 goalsRouter.get(
-  "/week/:startDate/:endDate/:userId",
+  "/week/:startDate/:endDate",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const { startDate, endDate, userId } = req.params;
-      const goals = await Goal.find({"startDate": startDate, "endDate": endDate, user: userId});
+      const { startDate, endDate } = req.params;
+      const goals = await Goal.find({"startDate": startDate, "endDate": endDate, user: req.user.id});
 
       res.json(goals.map(p => p.toJSON()));
     } catch (exception) {
@@ -45,14 +45,14 @@ goalsRouter.get(
 );
 
 goalsRouter.get(
-  "/course/:moduleId/:courseURL/:userId",
+  "/course/:moduleId/:courseURL",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const { moduleId, courseURL, userId } = req.params;
+      const { moduleId, courseURL } = req.params;
       const url = courseURL.split(',').join('/');
 
-      const goals = await Goal.find({"moduleId": moduleId, "courseURL": url, user: userId});
+      const goals = await Goal.find({"moduleId": moduleId, "courseURL": url, user: req.user.id});
 
       res.json(goals.map(p => p.toJSON()));
     } catch (exception) {
@@ -62,13 +62,13 @@ goalsRouter.get(
 );
 
 goalsRouter.get(
-  "/pathway/:pathwayId/:userId",
+  "/pathway/:pathwayId",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const { pathwayId, userId } = req.params;
+      const { pathwayId } = req.params;
       
-      const goals = await Goal.find({"pathwayId": pathwayId, user: userId});
+      const goals = await Goal.find({"pathwayId": pathwayId, user: req.user.id});
 
       res.json(goals.map(p => p.toJSON()));
     } catch (exception) {

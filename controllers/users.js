@@ -31,10 +31,8 @@ usersRouter.put(
   async (req, res, next) => {
     try {
       let body = req.body;
-      const id = body.id;
-      delete body.id;
 
-      const user = await User.findByIdAndUpdate(id, { ...body }, {new: true});
+      const user = await User.findByIdAndUpdate(req.user.id, { ...body }, {new: true});
       user.save();
       res.json(user);
     } catch (exception) {
@@ -66,12 +64,11 @@ usersRouter.get(
 );
 
 usersRouter.get(
-  "/:userId",
+  "/user",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const id = req.params.userId;
-      const user = await User.findById(id);
+      const user = await User.findById(req.user.id);
 
       res.json(user);
     } catch (exception) {
