@@ -45,6 +45,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "started"
   },
+  enrolledPathways: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Pathway"
+    }
+  ],
   busyTimesLastAsked: Number,
   neverAskBusyTimes: Boolean,
   studyDaysPerWeek: Number,
