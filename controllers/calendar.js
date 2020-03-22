@@ -24,8 +24,7 @@ calendarRouter.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      
-      const events = await CalendarEvent.find({});
+      const events = await CalendarEvent.find({user: req.user.id});
 
       res.json(events.map(p => p.toJSON()));
     } catch (exception) {

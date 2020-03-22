@@ -25,6 +25,21 @@ usersRouter.post("/", async (req, res, next) => {
   }
 });
 
+usersRouter.put(
+  "/modalssetup",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      let body = req.body;
+
+      const user = await User.findByIdAndUpdate(req.user.id, { ...body }, {new: true});
+      user.save();
+      res.json(user);
+    } catch (exception) {
+      next(exception);
+    }
+  });
+
 usersRouter.get("/", async (req, res) => {
   const users = await User.find({});
 
@@ -47,5 +62,20 @@ usersRouter.get(
     res.json(userForProfile);
   }
 );
+
+usersRouter.get(
+  "/user",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+
+      res.json(user);
+    } catch (exception) {
+      console.log('exception', exception)
+      // next(exception);
+    }
+  });
+
 
 module.exports = usersRouter;

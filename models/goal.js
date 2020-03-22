@@ -8,6 +8,10 @@ const goalSchema = new mongoose.Schema({
   moduleId: String,
   courseURL: String,
   pathwayId: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }
 });
 
 goalSchema.set("toJSON", {
@@ -19,6 +23,6 @@ goalSchema.set("toJSON", {
 });
 
 
-const goal = mongoose.model("goal", goalSchema);
+const Goal = mongoose.model("Goal", goalSchema);
 
-module.exports = goal;
+module.exports = Goal;
