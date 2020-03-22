@@ -17,7 +17,6 @@ const todosRouter = require("./controllers/todos");
 const calendarRouter = require("./controllers/calendar");
 const goalsRouter = require("./controllers/goals");
 const notesRouter = require("./controllers/notes");
-const goalsRouter = require("./controllers/goals");
 
 logger.info("Connecting to:", config.database);
 
@@ -57,7 +56,6 @@ app.use("/api/todos", todosRouter);
 app.use("/api/calendar", calendarRouter);
 app.use("/api/goals", goalsRouter);
 app.use("/api/notes", notesRouter);
-app.use("/api/goals", goalsRouter);
 
 // After router middleware
 app.use(middleware.unknownEndpoint);
