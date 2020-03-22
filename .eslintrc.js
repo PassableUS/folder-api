@@ -13,7 +13,9 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module"
   },
-  rules: {},
+  rules: {
+    "new-cap": ["error", { properties: false }]
+  },
   extends: [
     "plugin:security/recommended",
     "eslint:recommended",

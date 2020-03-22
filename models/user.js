@@ -41,6 +41,10 @@ const userSchema = new mongoose.Schema({
       ref: "Note"
     }
   ],
+  registrationStatus: {
+    type: String,
+    default: "started"
+  },
   busyTimesLastAsked: Number,
   neverAskBusyTimes: Boolean,
   studyDaysPerWeek: Number,
@@ -67,7 +71,7 @@ userSchema.set("toJSON", {
 userSchema.methods.updateFirstName = function(firstName) {
   if (firstName) {
     // If we are passed a valid name (not undefined), we will update the name
-    let newUser = {
+    const newUser = {
       ...this.toObject(),
       firstName
     };
@@ -85,7 +89,7 @@ userSchema.methods.updateFirstName = function(firstName) {
 
 userSchema.methods.updateLastName = function(lastName) {
   if (lastName) {
-    let newUser = {
+    const newUser = {
       ...this.toObject(),
       lastName
     };
@@ -104,7 +108,7 @@ userSchema.methods.updateLastName = function(lastName) {
 userSchema.methods.updateAvatarURL = function(avatarURL) {
   if (avatarURL) {
     // If we are passed a valid URL (not undefined), we will update the avatar
-    let newUser = {
+    const newUser = {
       ...this.toObject(),
       avatar: avatarURL
     };
@@ -123,7 +127,7 @@ userSchema.methods.updateAvatarURL = function(avatarURL) {
 userSchema.methods.updateEmail = function(email) {
   if (email) {
     // If we are passed a valid email (not undefined), we will update the email
-    let newUser = {
+    const newUser = {
       ...this.toObject(),
       email
     };
