@@ -32,13 +32,18 @@ usersRouter.put(
     try {
       let body = req.body;
 
-      const user = await User.findByIdAndUpdate(req.user.id, { ...body }, {new: true});
+      const user = await User.findByIdAndUpdate(
+        req.user.id,
+        { ...body },
+        { new: true }
+      );
       user.save();
       res.json(user);
     } catch (exception) {
       next(exception);
     }
-  });
+  }
+);
 
 usersRouter.get("/", async (req, res) => {
   const users = await User.find({});
@@ -57,7 +62,8 @@ usersRouter.get(
       id: user._id,
       avatar: user.avatar,
       email: user.email,
-      role: user.role
+      role: user.role,
+      registrationStatus: user.registrationStatus
     };
     res.json(userForProfile);
   }
@@ -72,10 +78,10 @@ usersRouter.get(
 
       res.json(user);
     } catch (exception) {
-      console.log('exception', exception)
+      console.log("exception", exception);
       // next(exception);
     }
-  });
-
+  }
+);
 
 module.exports = usersRouter;

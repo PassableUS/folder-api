@@ -1,5 +1,6 @@
 const pathwaysRouter = require("express").Router();
 const Pathway = require("../models/pathway");
+const Module = require("../models/module");
 const passport = require("passport");
 require("../utils/authentication/jwt");
 
@@ -92,6 +93,32 @@ pathwaysRouter.put(
       res.json(pathway);
     } catch (error) {
       next(error);
+    }
+  }
+);
+
+pathwaysRouter.post(
+  "/coursePathway",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      const { occupation, pathwayName, tags, description } = req.body;
+
+      const pathway = new Pathway({
+        name: pathwayName,
+        occupation,
+        tags: JSON.parse(tags), // Manually parses as bodyParser fails to parse as array
+        description,
+        author: req.user._id
+      });
+
+      const savedPathway = await pathway.save();
+
+      savedPathway.modules.push(req.body.moduleId);
+
+      res.json(savedPathway);
+    } catch (exception) {
+      next(exception);
     }
   }
 );
