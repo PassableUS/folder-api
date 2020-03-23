@@ -1,6 +1,6 @@
 const pathwaysRouter = require("express").Router();
 const Pathway = require("../models/pathway");
-const Module = require("../models/module");
+const User = require("../models/user");
 const passport = require("passport");
 require("../utils/authentication/jwt");
 
@@ -51,24 +51,37 @@ pathwaysRouter.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     try {
-      const pathway = await Pathway.findById(req.params.pathwayId)
-        .populate("author", "firstName lastName avatar")
-        .populate({
-          path: "modules",
-          select: "name courses description author",
-          populate: {
-            // Populates author within the module
-            path: "author",
-            select: "firstName lastName avatar"
-          }
-        });
+      const pathway = await Pathway.findById(req.params.pathwayId);
+
+      const isOwner = String(pathway.author) === String(req.user._id);
+      const isEnrolled = req.user.enrolledPathways.includes(pathway.id);
+
+      pathway.populate("author", "firstName lastName avatar").populate({
+        path: "modules",
+        select: "name courses description author",
+        populate: {
+          // Populates author within the module
+          path: "author",
+          select: "firstName lastName avatar"
+        }
+      });
 
       if (!pathway) {
         res.status(404).send();
         return; // Must stop further execution of async code or else Express will try to send the json at the end there.
       }
 
-      res.json(pathway);
+      console.log("========== PATHWAY FETCH ============");
+      console.log("Pathway author: ", pathway.author);
+      console.log("Request author: ", req.user._id);
+
+      const pathwayWithUserDetails = {
+        ...pathway.toJSON(),
+        isOwner,
+        isEnrolled
+      };
+
+      res.json(pathwayWithUserDetails);
     } catch (error) {
       next(error);
     }
@@ -81,6 +94,15 @@ pathwaysRouter.put(
   async (req, res, next) => {
     try {
       const pathway = await Pathway.findById(req.params.pathwayId);
+      if (String(pathway.author) !== String(req.user._id)) {
+        console.log("========== UNAUTHORIZED MODULE ADD ============");
+        console.log("Pathway author: ", pathway.author);
+        console.log("Request author: ", req.user._id);
+        res
+          .status(401)
+          .send("You do not have permission to add modules to this pathway.");
+        return;
+      }
 
       if (!pathway) {
         res.status(404).send();
@@ -117,6 +139,24 @@ pathwaysRouter.post(
       savedPathway.modules.push(req.body.moduleId);
 
       res.json(savedPathway);
+    } catch (exception) {
+      next(exception);
+    }
+  }
+);
+
+pathwaysRouter.post(
+  "/join",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      const { pathwayId } = req.body;
+
+      const user = await User.findById(req.user.id);
+      user.enrolledPathways.push(pathwayId);
+      await user.save();
+
+      res.json(user);
     } catch (exception) {
       next(exception);
     }
