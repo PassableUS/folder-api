@@ -4,7 +4,7 @@ const config = require("../config");
 // Generate an Access Token for the given User ID
 function generateAccessJWT(userId) {
   // Time until token expires
-  const expiresIn = "2 days";
+  const expiresIn = "45 days";
   // Issuer of token
   const issuer = config.authentication.token.issuer;
   // Intended audience/service for token
