@@ -56,32 +56,30 @@ pathwaysRouter.get(
       const isOwner = String(pathway.author) === String(req.user._id);
       const isEnrolled = req.user.enrolledPathways.includes(pathway.id);
 
-      pathway.populate("author", "firstName lastName avatar").populate({
-        path: "modules",
-        select: "name courses description author",
-        populate: {
-          // Populates author within the module
-          path: "author",
-          select: "firstName lastName avatar"
-        }
-      });
+      const populatedPathway = await Pathway.findById(req.params.pathwayId)
+        .populate("author", "firstName lastName avatar")
+        .populate({
+          path: "modules",
+          select: "name courses description author",
+          populate: {
+            // Populates author within the module
+            path: "author",
+            select: "firstName lastName avatar"
+          }
+        });
 
-      if (!pathway) {
+      if (!populatedPathway) {
         res.status(404).send();
         return; // Must stop further execution of async code or else Express will try to send the json at the end there.
       }
 
-      console.log("========== PATHWAY FETCH ============");
-      console.log("Pathway author: ", pathway.author);
-      console.log("Request author: ", req.user._id);
-
-      const pathwayWithUserDetails = {
-        ...pathway.toJSON(),
+      const populatedPathwayWithUserDetails = {
+        ...populatedPathway.toJSON(),
         isOwner,
         isEnrolled
       };
 
-      res.json(pathwayWithUserDetails);
+      res.json(populatedPathwayWithUserDetails);
     } catch (error) {
       next(error);
     }
