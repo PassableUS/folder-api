@@ -140,6 +140,34 @@ pathwaysRouter.post(
   }
 );
 
+pathwaysRouter.get(
+  "/user/enrolled",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      const pathwayIds = req.user.enrolledPathways;
+
+      const records = await Pathway.find()
+        .where("_id")
+        .in(pathwayIds)
+        .populate("author", "firstName lastName avatar")
+        .exec();
+
+      // const populatedRecords = [];
+      // records.forEach(doc =>
+      //   populatedRecords.push(
+      //     doc
+      //   )
+      // );
+      // ;
+
+      res.json(records);
+    } catch (exception) {
+      next(exception);
+    }
+  }
+);
+
 pathwaysRouter.post(
   "/join",
   passport.authenticate("jwt", { session: false }),
