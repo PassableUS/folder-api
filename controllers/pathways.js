@@ -93,9 +93,6 @@ pathwaysRouter.put(
     try {
       const pathway = await Pathway.findById(req.params.pathwayId);
       if (String(pathway.author) !== String(req.user._id)) {
-        console.log("========== UNAUTHORIZED MODULE ADD ============");
-        console.log("Pathway author: ", pathway.author);
-        console.log("Request author: ", req.user._id);
         res
           .status(401)
           .send("You do not have permission to add modules to this pathway.");
