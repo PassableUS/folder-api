@@ -69,17 +69,35 @@ usersRouter.get(
   }
 );
 
+usersRouter.put(
+  "/registrationStatus",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { step } = req.body;
+
+      const savedUser = await User.findById(req.user.id);
+      savedUser.registrationStatus = step;
+      savedUser.save();
+
+      res.json(savedUser);
+    } catch (exception) {
+      console.log("exception", exception);
+      // next(exception);
+    }
+  }
+);
+
 usersRouter.get(
   "/user",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const user = await User.findById(req.user.id);
 
       res.json(user);
     } catch (exception) {
-      console.log("exception", exception);
-      // next(exception);
+      next(exception);
     }
   }
 );
