@@ -5,7 +5,7 @@ const logRequest = (req, res, next) => {
   logger.info("Path:    ", req.path);
   logger.info("Body:    ", req.body);
   logger.info("Headers: ", req.headers);
-  logger.info("Params: ", req.params);
+  logger.info("Params (req.query): ", req.query);
   logger.info("--------");
   next();
 };

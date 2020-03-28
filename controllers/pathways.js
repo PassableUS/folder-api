@@ -34,13 +34,18 @@ pathwaysRouter.get(
   async (req, res, next) => {
     try {
       // TODO: Implement pagination here
-      const { requestVerifiedOnly } = req.body;
+      const { requestVerifiedOnly } = req.query;
+
+      let findObject = {};
 
       if (requestVerifiedOnly) {
         console.log("REQUESTING VERIFIED ONLY");
+        findObject = {
+          verified: true
+        };
       }
 
-      const pathways = await Pathway.find({}).populate(
+      const pathways = await Pathway.find(findObject).populate(
         "author",
         "firstName lastName avatar"
       );
