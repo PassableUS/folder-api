@@ -1,22 +1,27 @@
 // TODO: Implement toJSON methods here and use them in controller to prevent information leaking
 const mongoose = require("mongoose");
 
-const pathwaySchema = new mongoose.Schema({
-  name: String,
-  occupation: String,
-  tags: [String],
-  description: String,
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  },
-  modules: [
-    {
+const pathwaySchema = new mongoose.Schema(
+  {
+    name: String,
+    occupation: String,
+    tags: [String],
+    description: String,
+    author: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Module"
-    }
-  ]
-});
+      ref: "User"
+    },
+    modules: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Module"
+      }
+    ]
+  },
+  {
+    timestamps: {}
+  }
+);
 
 pathwaySchema.set("toJSON", {
   transform: (document, returnedObject) => {
