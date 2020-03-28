@@ -187,6 +187,10 @@ pathwaysRouter.post(
       const { pathwayId } = req.body;
 
       const user = await User.findById(req.user.id);
+      if (user.enrolledPathways.includes(pathwayId)) {
+        res.status(500).send({ error: "User already enrolled in pathway" });
+        return;
+      }
       user.enrolledPathways.push(pathwayId);
       await user.save();
 
